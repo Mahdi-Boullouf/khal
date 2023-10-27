@@ -1,49 +1,45 @@
 name: khial
 description: A new Flutter project.
 
-publish_to: 'none' 
-
+publish_to: 'none'
 
 version: 1.0.0+1
 
 environment:
   sdk: '>=3.0.0-215.0.dev <4.0.0'
 
-
 dependencies:
+  cloud_firestore: ^4.12.1
+  cupertino_icons: ^1.0.2
+  firebase_auth: ^4.12.0
+  firebase_core: null
+  firebase_database: null
   flutter:
     sdk: flutter
-  firebase_database: 
-  firebase_core:  
-  page_transition: 
-  fluttertoast: 
-
-
-  cupertino_icons: ^1.0.2
+  fluttertoast: null
+  page_transition: null
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.13.1"
 
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/راية_العقاب 1.png"      
+  image_path: "assets/images/راية_العقاب 1.png"
 
   flutter_lints: ^2.0.0
 
-
 flutter:
-
 
   uses-material-design: true
   assets:
     - assets/images/راية_العقاب 1.png
-  
+
   fonts:
     - family: Cairo
       fonts:
-        - asset: assets/fonts/Cairo-Regular.ttf 
+        - asset: assets/fonts/Cairo-Regular.ttf
         - asset: assets/fonts/Cairo-Medium.ttf
-        - asset: assets/fonts/Cairo-Bold.ttf 
+        - asset: assets/fonts/Cairo-Bold.ttf

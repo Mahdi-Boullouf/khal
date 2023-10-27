@@ -1,6 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:khial/constant/style.dart';
+import 'package:khial/core/firebase_instances.dart';
 import 'package:khial/widgets/DefaultTextStyle/defaultextstyle.dart';
 import 'package:khial/widgets/defaultbuttomn/defaultbuttomn.dart';
 import 'package:khial/widgets/mytextfromfield/my_textfrom_field.dart';
@@ -15,8 +16,10 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   TextEditingController productname = TextEditingController();
-  bool mokataa = true;
+  TextEditingController barCodeController = TextEditingController();
 
+  bool mokataa = true;
+  bool isCoded = false;
   List<String> mokataa_text = [
     "يجب مقاطعته",
     "لا يجب مقاطعته",
@@ -34,6 +37,17 @@ class _MainScreenState extends State<MainScreen> {
     databaseReference.child("products").child(productName).set(mokataaMap);
   }
 
+  Future<void> addCodedProduct(
+      String name, String barCode, bool boycotted) async {
+    Map<String, dynamic> codedProductRawData = {
+      'name': name,
+      'state': boycotted,
+      'barCode': barCode
+    };
+    print('fffff');
+    await fireStore.collection('products').doc().set(codedProductRawData);
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -45,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: maincolor,
         centerTitle: true,
         title: MyDefaultTextStyle(
-            text: "اضافة منتجات المفاطعة", height: height * 0.022, bold: true),
+            text: "اضافة منتجات المقاطعة", height: height * 0.022, bold: true),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -63,6 +77,25 @@ class _MainScreenState extends State<MainScreen> {
                     width: width * 0.8,
                   ),
                 ),
+                CheckboxListTile(
+                    value: isCoded,
+                    title: Text(
+                      'اضافة كود بار',
+                      textAlign: TextAlign.end,
+                    ),
+                    onChanged: (value) {
+                      setState(() {
+                        isCoded = !isCoded;
+                      });
+                    }),
+                isCoded
+                    ? MyTextForm(
+                        controller: barCodeController,
+                        hinttext: 'الرقم التسلسلي',
+                        height: height * 0.1,
+                        width: width * 0.8,
+                      )
+                    : SizedBox(),
                 Container(
                   width: width * 0.9,
                   color: white,
@@ -156,10 +189,19 @@ class _MainScreenState extends State<MainScreen> {
                                           width: width * 0.05,
                                         ),
                                         Defaultbutton(
-                                            functon: () {
-                                              addProduct(
-                                                  productname.text, mokataa);
-                                              print(productname.text);
+                                            functon: () async {
+                                              if (!isCoded) {
+                                                addProduct(
+                                                    productname.text, mokataa);
+                                              } else {
+                                                print(
+                                                    '-------------------------------');
+                                                await addCodedProduct(
+                                                    productname.text,
+                                                    barCodeController.text,
+                                                    mokataa);
+                                              }
+
                                               Navigator.pop(context);
 
                                               showtoast("تم اضافة منتج بنجاح");
