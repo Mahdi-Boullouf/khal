@@ -41,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
       String name, String barCode, bool boycotted) async {
     Map<String, dynamic> codedProductRawData = {
       'name': name,
-      'state': boycotted,
+      'boycotted': boycotted,
       'barCode': barCode
     };
     print('fffff');
